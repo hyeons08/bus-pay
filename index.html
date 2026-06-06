@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>버스 운전직 임금계산기 (급여계산 안내서 기준)</title>
+  <title>서울버스 임금 계산기</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
@@ -134,8 +134,8 @@
     .cal-day.type-PM .day-num { color: #1a5276; }
     .cal-day.type-CHE { background: #f0e8fb; border-color: #8e44ad; }
     .cal-day.type-CHE .day-num { color: #6c3483; }
-    .cal-day.type-ANN { background: #d1f2eb; border-color: #16a085; }
-    .cal-day.type-ANN .day-num { color: #0e6655; }
+    .cal-day.type-ANN { background: #fdebd0; border-color: #e67e22; }
+    .cal-day.type-ANN .day-num { color: #b9770e; }
     .cal-day.type-OFF { background: #ececec; border-color: #bbb; }
     .cal-day.type-OFF .day-num { color: #888; }
 
@@ -147,7 +147,7 @@
     .type-AM .day-tag  { background: #a9dfbf; color: #1e8449; }
     .type-PM .day-tag  { background: #aed6f1; color: #1a5276; }
     .type-CHE .day-tag { background: #d2b4de; color: #6c3483; }
-    .type-ANN .day-tag { background: #a2d9ce; color: #0e6655; }
+    .type-ANN .day-tag { background: #f8d7ac; color: #b9770e; }
     .type-OFF .day-tag { background: #ccc; color: #555; }
 
     /* 파생 카테고리 미니 배지 (휴일근무 / 쉬프트2 / 절) */
@@ -259,7 +259,7 @@
     .modal-btn.type-AM.selected  { border-color: #27ae60; background: #27ae60; }
     .modal-btn.type-PM.selected  { border-color: #2980b9; background: #2980b9; }
     .modal-btn.type-CHE.selected { border-color: #8e44ad; background: #8e44ad; }
-    .modal-btn.type-ANN.selected { border-color: #16a085; background: #16a085; }
+    .modal-btn.type-ANN.selected { border-color: #e67e22; background: #e67e22; }
     .modal-btn.type-OFF.selected { border-color: #888; background: #888; }
 
     .modal-clear {
@@ -289,16 +289,34 @@
       background: #eaf2fb; border-radius: 10px; padding: 10px 12px;
       font-size: 12px; color: #1a5276; margin-bottom: 12px; line-height: 1.6;
     }
+
+    /* ── 후원 안내 카드 ── */
+    .support-card {
+      background: linear-gradient(135deg, #fff7e6 0%, #ffeccc 100%);
+      border: 1.5px solid #f0c987;
+      border-radius: 16px;
+      padding: 13px 16px;
+      margin-bottom: 14px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .support-acct { font-size: 15px; font-weight: 800; color: #b9770e; letter-spacing: 0.3px; }
+    .support-msg { font-size: 12px; color: #8a6d3b; margin-top: 5px; line-height: 1.5; }
   </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>🚌 버스 운전직 임금계산기</h1>
-  <p id="headerSub">급여계산 안내서 기준</p>
+  <h1>🚌 서울버스 임금 계산기</h1>
 </div>
 
 <div class="container">
+
+  <!-- 후원 안내 -->
+  <div class="support-card">
+    <div class="support-acct">국민 012501-04-293486</div>
+    <div class="support-msg">여러분의 후원이 계산기 개발에 큰 도움이 됩니다.</div>
+  </div>
 
   <!-- ① 기본 설정 -->
   <div class="card">
@@ -324,7 +342,7 @@
       </select>
     </div>
 
-    <span class="section-label" style="margin-top:4px;">나의 휴무 패턴 (앞=무급휴무일 · 뒤=유급주휴일)</span>
+    <span class="section-label" style="margin-top:4px;">나의휴무</span>
     <div class="rest-grid">
       <div class="rest-btn" data-days="0,1" onclick="setRest(this)">일·월</div>
       <div class="rest-btn" data-days="1,2" onclick="setRest(this)">월·화</div>
@@ -357,17 +375,11 @@
     </div>
     <div class="cal-grid" id="calGrid"></div>
 
-    <div class="info-banner">
-      📌 날짜를 탭해 <b>오전·오후</b>를 입력하면, 그날이 평일·주휴일·무급휴무일·공휴일 중 무엇인지에 따라
-      수당(연장·야간·휴일수당·쉬프트2·절수당)이 <b>자동</b>으로 계산됩니다.<br>
-      • 유급주휴일에 근무 → <b>휴일수당</b> &nbsp; • 무급휴무일에 근무 → <b>쉬프트2</b> &nbsp; • 공휴일에 근무 → <b>절수당</b>
-    </div>
-
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>오전 근무</div>
       <div class="legend-item"><div class="legend-dot" style="background:#2980b9"></div>오후 근무</div>
       <div class="legend-item"><div class="legend-dot" style="background:#8e44ad"></div>청원휴가</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#16a085"></div>연차</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>연차</div>
       <div class="legend-item"><div class="legend-dot" style="background:#aaa"></div>결근</div>
       <div class="legend-item"><div class="legend-dot" style="background:#c9bfe0"></div>무급휴무일</div>
       <div class="legend-item"><div class="legend-dot" style="background:#bcd4ee"></div>유급주휴일</div>
@@ -414,11 +426,13 @@
 //  ※ 새 회사를 추가하려면 아래 객체에 한 줄만 추가하면
 //    회사 선택 목록에 자동으로 나타납니다.
 //  - bonusHours : 상여금 = 시급 × bonusHours (매월). 상여 없으면 0
+//  - seolBonus    : 설날 명절수당(정액). 설날이 있는 달에 재직 시 지급. 없으면 0
+//  - chuseokBonus : 추석 명절수당(정액). 추석이 있는 달에 재직 시 지급. 없으면 0
 // =========================================================
 const COMPANIES = {
-  bumil: { name: '범일운수㈜',   bonusHours: 88 },  // 상여금 88시간 × 시급 (매월)
-  krbrt: { name: '한국비알티㈜', bonusHours: 0  },  // 상여금 없음
-  // 예) newco: { name: '새운수㈜', bonusHours: 0 },
+  bumil: { name: '범일운수㈜',   bonusHours: 88, seolBonus: 300000, chuseokBonus: 350000 },  // 상여 88H, 명절수당 설30·추35만
+  krbrt: { name: '한국비알티㈜', bonusHours: 0,  seolBonus: 300000, chuseokBonus: 350000 },  // 상여 없음, 명절수당 설30·추35만
+  // 예) newco: { name: '새운수㈜', bonusHours: 0, seolBonus: 0, chuseokBonus: 0 },
 };
 
 // =========================================================
@@ -556,6 +570,20 @@ function countDow(y, m, targetDow) {
   for (let d = 1; d <= total; d++) if (new Date(y, m, d).getDay() === targetDow) c++;
   return c;
 }
+// 이번 달이 설날 달인지 추석 달인지 판별 → 'seol' | 'chuseok' | null
+function getMyeongjeolType(y, m) {
+  const total = daysInMonth(y, m);
+  let seol = false, chuseok = false;
+  for (let d = 1; d <= total; d++) {
+    const name = HOLIDAYS[dKey(y, m, d)];
+    if (!name) continue;
+    if (name.includes('설날')) seol = true;
+    if (name.includes('추석')) chuseok = true;
+  }
+  if (chuseok) return 'chuseok';
+  if (seol)    return 'seol';
+  return null;
+}
 
 // 무급휴무일(restDays[0]) 기준으로 이 달의 몇 번째 주(0-indexed)인지
 function getHolidayBasedWeek(y, m, d) {
@@ -600,8 +628,7 @@ function buildCompanySelect() {
   const sel = document.getElementById('companySelect');
   sel.innerHTML = Object.keys(COMPANIES).map(k => {
     const c = COMPANIES[k];
-    const bonusTxt = c.bonusHours > 0 ? ` (상여 ${c.bonusHours}H)` : ' (상여 없음)';
-    return `<option value="${k}">${c.name}${bonusTxt}</option>`;
+    return `<option value="${k}">${c.name}</option>`;
   }).join('');
   sel.value = companyKey;
 }
@@ -852,25 +879,31 @@ function updateCalc() {
   const weeklyHol = Math.round(juHyuCount * 8 * HR);
 
   // ⑥ 휴일수당 — 유급주휴일 근무일수 × 14H × 시급
-  const holidayPay = Math.round(holidayWork * 14 * HR);
+  const holidayPay = Math.round(14 * HR) * holidayWork;
 
   // ⑦ 절수당 — 공휴일 근무일수 × 12.5H × 시급 + 겹침일수 × 8H × 시급
-  const holPublicPay = Math.round(holPublicWork * 12.5 * HR) + Math.round(overlapDays * 8 * HR);
+  const holPublicPay = Math.round(12.5 * HR) * holPublicWork + Math.round(8 * HR) * overlapDays;
 
   // ⑧ 쉬프트2 — 무급휴무일 근무일수 × 13.5H × 시급
-  const shift2Pay = Math.round(shift2Work * 13.5 * HR);
+  const shift2Pay = Math.round(13.5 * HR) * shift2Work;
 
   // ⑨ 상여금 — 시급 × 회사별 상여시간 (매월)
   const sangyeoPay = Math.round(company.bonusHours * HR);
 
-  // ⑩ 무사고수당 — 만근(소정근로일 전부 입력 + 결근 0) 시 정액
+  // ⑩ 명절수당 — 설날(30만)·추석(35만) 달에 재직 시 정액 전액 지급
+  const mjType = getMyeongjeolType(curYear, curMonth);
+  let myeongjeolPay = 0, myeongjeolLabel = '';
+  if (mjType === 'seol')    { myeongjeolPay = company.seolBonus;    myeongjeolLabel = '설날'; }
+  else if (mjType === 'chuseok') { myeongjeolPay = company.chuseokBonus; myeongjeolLabel = '추석'; }
+
+  // ⑪ 무사고수당 — 만근(소정근로일 전부 입력 + 결근 0) 시 정액
   const isMankuen = absentDays === 0 && filledSojeong >= sojeong && sojeong > 0;
   const bonusAmount = (safetyOn && isMankuen) ? 210000 : 0;
 
   // 소계 (시간급 항목 합)
   const subtotal = basePay + overBasePay + overtimePay + nightAM + nightPM
                  + weeklyHol + holidayPay + holPublicPay + shift2Pay;
-  const totalPay = subtotal + sangyeoPay + bonusAmount;
+  const totalPay = subtotal + sangyeoPay + myeongjeolPay + bonusAmount;
 
   // =========================================================
   //  통계 칩
@@ -887,6 +920,7 @@ function updateCalc() {
     cheDays      > 0 ? { label: `청원휴가 ${cheDays}일` } : null,
     annDays      > 0 ? { label: `연차 ${annDays}일` } : null,
     absentDays   > 0 ? { label: `결근 ${absentDays}일`,         cls: 'warn' } : null,
+    myeongjeolPay> 0 ? { label: `${myeongjeolLabel}수당`,        cls: 'ok' } : null,
   ].filter(Boolean);
   chips.innerHTML = chipData.map(c =>
     `<div class="stat-chip ${c.cls||''}">${c.label}</div>`
@@ -898,7 +932,7 @@ function updateCalc() {
   const area = document.getElementById('resultArea');
   const rows = [];
 
-  rows.push({ label: `기본급 — ${MONTHLY_HOURS}시간 × ${HR.toLocaleString()}원 (소정 ${sojeong}일)`, amount: basePay });
+  rows.push({ label: `기본급 — ${MONTHLY_HOURS}시간 × ${HR.toLocaleString()}원`, amount: basePay });
   if (overBasePay > 0) rows.push({ label: `기본급초과 — (${sojeong}−${BASE_DAYS})일 × 8H × 시급`, amount: overBasePay });
   if (overtimePay > 0) rows.push({ label: `연장수당 — ${weekdayWork}일 (1H×150%)`, amount: overtimePay });
   if (nightAM > 0)     rows.push({ label: `야간수당(오전) — ${amWorked}일 (2H×50%)`, amount: nightAM });
@@ -913,6 +947,7 @@ function updateCalc() {
   }
   if (shift2Pay > 0)   rows.push({ label: `쉬프트2 — 무급휴무일근무 ${shift2Work}일 (13.5H)`, amount: shift2Pay });
   if (sangyeoPay > 0)  rows.push({ label: `상여금 — ${company.bonusHours}H × 시급 (매월)`, amount: sangyeoPay });
+  if (myeongjeolPay > 0) rows.push({ label: `명절수당 — ${myeongjeolLabel} 정액`, amount: myeongjeolPay });
   if (bonusAmount > 0) rows.push({ label: '무사고 개근 포상금', amount: 210000 });
 
   let html = rows.map(r => `
@@ -933,8 +968,6 @@ function updateCalc() {
       : `미입력 ${Math.max(0, sojeong - filledSojeong)}일`;
     html += `<div class="bonus-box red">⚠️ 만근 미달 (${reason}) — 무사고 개근 포상금 미지급</div>`;
   }
-
-  html += `<p style="font-size:11px;color:#aaa;text-align:right;margin-top:10px;">${company.name} · ${grade}호봉 통상시급 ${HR.toLocaleString()}원 · 4대보험·세금·조합비 공제 전 금액</p>`;
 
   area.innerHTML = html;
 }
