@@ -142,8 +142,8 @@
     .cal-day.type-SHIFT .day-num { color: #0e6655; }
     .cal-day.type-SHIFTD { background: #e3e0fb; border-color: #6c5ce7; }
     .cal-day.type-SHIFTD .day-num { color: #4834b0; }
-    .cal-day.type-SIMYA { background: #d5d8e0; border-color: #34495e; }
-    .cal-day.type-SIMYA .day-num { color: #2c3e50; }
+    .cal-day.type-SIMYA { background: #a9cce3; border-color: #1f618d; }
+    .cal-day.type-SIMYA .day-num { color: #154360; }
 
     .day-num { font-size: 13px; font-weight: 700; line-height: 1; }
     .day-tag {
@@ -157,7 +157,7 @@
     .type-OFF .day-tag { background: #ccc; color: #555; }
     .type-SHIFT .day-tag  { background: #a3e4d7; color: #0e6655; }
     .type-SHIFTD .day-tag { background: #c8c0f0; color: #4834b0; }
-    .type-SIMYA .day-tag  { background: #aeb6c7; color: #2c3e50; }
+    .type-SIMYA .day-tag  { background: #7fb3d5; color: #ffffff; }
 
     /* 파생 카테고리 미니 배지 (휴일근무 / 쉬프트2 / 절) */
     .cat-tag {
@@ -275,7 +275,7 @@
     .modal-btn.type-OFF.selected { border-color: #888; background: #888; }
     .modal-btn.type-SHIFT.selected  { border-color: #16a085; background: #16a085; }
     .modal-btn.type-SHIFTD.selected { border-color: #6c5ce7; background: #6c5ce7; }
-    .modal-btn.type-SIMYA.selected  { border-color: #34495e; background: #34495e; }
+    .modal-btn.type-SIMYA.selected  { border-color: #1f618d; background: #1f618d; }
 
     .modal-clear {
       flex: 1; padding: 13px; background: #fce4e4; color: #e74c3c;
@@ -398,7 +398,7 @@
       <div class="legend-item"><div class="legend-dot" style="background:#aaa"></div>결근</div>
       <div class="legend-item"><div class="legend-dot" style="background:#16a085"></div>쉬프트</div>
       <div class="legend-item"><div class="legend-dot" style="background:#6c5ce7"></div>쉬프트 더블</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#34495e"></div>심야근무</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1f618d"></div>심야근무</div>
       <div class="legend-item"><div class="legend-dot" style="background:#c9bfe0"></div>무급휴무일</div>
       <div class="legend-item"><div class="legend-dot" style="background:#bcd4ee"></div>유급주휴일</div>
     </div>
@@ -424,17 +424,17 @@
       <div class="modal-btn type-AM" data-type="AM" onclick="selectType(this)">🌅<br>오전 근무</div>
       <div class="modal-btn type-PM" data-type="PM" onclick="selectType(this)">🌇<br>오후 근무</div>
     </div>
-    <!-- 청원휴가 / 연차 / 결근 -->
-    <div class="modal-grid-3">
-      <div class="modal-btn type-CHE" data-type="CHE" onclick="selectType(this)">📝<br>청원휴가</div>
-      <div class="modal-btn type-ANN" data-type="ANN" onclick="selectType(this)">🌴<br>연차</div>
-      <div class="modal-btn type-OFF" data-type="OFF" onclick="selectType(this)">❌<br>결근</div>
-    </div>
     <!-- 쉬프트 / 쉬프트 더블 / 심야근무 -->
     <div class="modal-grid-3">
       <div class="modal-btn type-SHIFT" data-type="SHIFT" onclick="selectType(this)"><b>S</b><br>쉬프트(5H)</div>
       <div class="modal-btn type-SHIFTD" data-type="SHIFTD" onclick="selectType(this)"><b>SS</b><br>쉬프트 더블(10H)</div>
       <div class="modal-btn type-SIMYA" data-type="SIMYA" onclick="selectType(this)">🌙<br>심야근무</div>
+    </div>
+    <!-- 청원휴가 / 연차 / 결근 -->
+    <div class="modal-grid-3">
+      <div class="modal-btn type-ANN" data-type="ANN" onclick="selectType(this)">🌴<br>연차</div>
+      <div class="modal-btn type-CHE" data-type="CHE" onclick="selectType(this)">📝<br>청원휴가</div>
+      <div class="modal-btn type-OFF" data-type="OFF" onclick="selectType(this)">❌<br>결근</div>
     </div>
     <div style="display:flex;gap:8px;margin-top:10px;">
       <button class="modal-clear" onclick="clearDay()">🗑️ 지우기</button>
@@ -481,14 +481,14 @@ const GRADES = {
 const MONTHLY_HOURS = 176; // 한 달 기준 근로시간 (8H × 22일)
 const BASE_DAYS = 22;      // 소정근로일 기준 (이 일수까지는 176H 전액 보장)
 
-const TYPE_LABELS = { AM:'오전', PM:'오후', CHE:'청원휴가', ANN:'연차', OFF:'결근', SHIFT:'쉬프트', SHIFTD:'쉬프트더블', SIMYA:'심야근무' };
+const TYPE_LABELS = { AM:'오전', PM:'오후', CHE:'청원휴가', ANN:'연차', OFF:'결근', SHIFT:'쉬프트', SHIFTD:'쉬프트더블', SIMYA:'심야' };
 
 // 쉬프트 인정시간 (필요 시 이 숫자만 바꾸면 수당이 자동 반영됩니다)
 // ※ 쉬프트 더블 = 쉬프트 2회분(쉬프트 1회 금액 × 2)으로 계산
 const SHIFT_HOURS = 7.5;   // 쉬프트 1회 지급시간 (근무표시 5H → 실지급 7.5H) · 더블 = 15H
 
-// 심야근무 인정시간 — ※ 임시값입니다. 실제 기준을 알려주시면 이 숫자만 바꾸면 됩니다
-const SIMYA_HOURS = 8;      // 심야근무 1회 인정시간 (임시)
+// 심야수당 시간 — 심야근무는 오후근무와 동일하게 임금 계산 후, 심야수당(시급×0.5H)을 추가 지급
+const SIMYA_HOURS = 0.5;
 
 // =========================================================
 //  공휴일 데이터 (2024 ~ 2027)
@@ -872,13 +872,14 @@ function updateCalc() {
     const isPaidRest   = (dow === restDays[1]);
     const isSojeong    = (!isUnpaidRest && !isPaidRest);
     const isPublicHol  = !!HOLIDAYS[key];
-    const worked = (t === 'AM' || t === 'PM');
+    const worked = (t === 'AM' || t === 'PM' || t === 'SIMYA');
 
     // 법정공휴일이 소정근로일과 겹친 날은 유급휴일 → 만근 기준에서 제외
     if (isSojeong && isPublicHol) sojeongHoliday++;
 
     if (worked) {
-      if (t === 'AM') amWorked++; else pmWorked++;
+      if (t === 'AM') amWorked++; else pmWorked++;      // 심야근무는 오후근무와 동일하게 집계
+      if (t === 'SIMYA') simyaCount++;                  // 심야수당 별도 지급용 카운트
       if (isPaidRest)        holidayWork++;             // 유급주휴일 근무 → 휴일수당
       else if (isUnpaidRest) shift2Work++;             // 무급휴무일 근무 → 쉬프트2
       else {                                           // 평일(소정근로일) 근무
@@ -893,7 +894,6 @@ function updateCalc() {
       if (isSojeong && !isPublicHol) absentDays++;     // 공휴일 결근은 유급휴일이므로 만근에 영향 없음
     } else if (t === 'SHIFT')  { shiftCount++;          // 쉬프트 (수동)
     } else if (t === 'SHIFTD') { shiftDCount++;         // 쉬프트 더블 (수동)
-    } else if (t === 'SIMYA')  { simyaCount++;          // 심야근무 (수동)
     }
 
     // 공휴일이 무급휴무일과 겹쳤는데 근무하지 않은 날 → 8시간분 지급
@@ -958,7 +958,8 @@ function updateCalc() {
   const shiftPay  = Math.round(SHIFT_HOURS * HR) * shiftCount;
   const shiftDPay = Math.round(SHIFT_HOURS * 2 * HR) * shiftDCount;
 
-  // ⑧-3 심야근무 (수동 선택) — 인정시간 × 시급 × 일수  ※ 단가 임시값
+  // ⑧-3 심야수당 (수동 선택) — 임금은 오후근무와 동일하게 계산되고, 심야수당을 추가 지급
+  //   - 심야수당 = 시급 × 0.5시간 × 심야근무 일수
   const simyaPay = Math.round(SIMYA_HOURS * HR) * simyaCount;
 
   // ⑨ 상여금 — 시급 × 회사별 상여시간 (매월)
@@ -1038,7 +1039,7 @@ function updateCalc() {
   const shiftLbl = company.shiftLabel || '쉬프트';
   if (shiftPay > 0)    rows.push({ label: `${shiftLbl} — ${shiftCount}일 (${SHIFT_HOURS}H)`, amount: shiftPay });
   if (shiftDPay > 0)   rows.push({ label: `${shiftLbl} 더블 — ${shiftDCount}일 (${SHIFT_HOURS * 2}H)`, amount: shiftDPay });
-  if (simyaPay > 0)    rows.push({ label: `심야근무 — ${simyaCount}일 (${SIMYA_HOURS}H)`, amount: simyaPay });
+  if (simyaPay > 0)    rows.push({ label: `심야수당 — ${simyaCount}일 (0.5H)`, amount: simyaPay });
   if (sangyeoPay > 0)  rows.push({ label: `상여금 — ${company.bonusHours}H × 시급 (매월)`, amount: sangyeoPay });
   if (myeongjeolPay > 0) rows.push({ label: `명절수당 — ${myeongjeolLabel} 정액`, amount: myeongjeolPay });
   if (bonusAmount > 0) rows.push({ label: '무사고 개근 포상금', amount: 210000 });
