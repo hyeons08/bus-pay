@@ -23,10 +23,26 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
     .header h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+    .header h1 .made-by { font-size: 11px; font-weight: 600; opacity: 0.7; letter-spacing: 0; white-space: nowrap; }
     .header p { font-size: 11px; opacity: 0.75; margin-top: 5px; }
 
     /* ── 컨테이너 ── */
     .container { max-width: 520px; margin: 0 auto; padding: 14px 12px; }
+
+    /* ── 푸터(카피라이트) ── */
+    .site-footer {
+      background: linear-gradient(135deg, #154360 0%, #1a5276 100%);
+      color: #fff; text-align: center; padding: 20px 18px 24px; margin-top: 8px;
+    }
+    .site-footer .src { font-size: 12.5px; font-weight: 800; letter-spacing: -0.2px; }
+    .site-footer .msg { font-size: 11px; opacity: 0.82; margin: 7px 0 11px; line-height: 1.6; }
+    .site-footer a.mailbtn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.16); color: #fff; font-size: 12px; font-weight: 700;
+      padding: 7px 15px; border-radius: 20px; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .site-footer a.mailbtn:active { background: rgba(255,255,255,0.28); }
 
     /* ── 카드 ── */
     .card {
@@ -327,7 +343,7 @@
 <body>
 
 <div class="header">
-  <h1>🚌 서울버스 임금 계산기</h1>
+  <h1>🚌 서울버스 임금 계산기 <span class="made-by">made by 박현석</span></h1>
 </div>
 
 <div class="container">
@@ -418,6 +434,13 @@
   </div>
 
 </div>
+
+<!-- 푸터 (카피라이트) -->
+<footer class="site-footer">
+  <div class="src">ⓒ 박현석 · 한국비알티</div>
+  <div class="msg">문의사항이나 개선할 점이 있다면 아래 메일 주소로 보내주세요.</div>
+  <a class="mailbtn" href="mailto:hyeons08@naver.com">✉️ hyeons08@naver.com</a>
+</footer>
 
 <!-- 모달 -->
 <div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
