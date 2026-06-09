@@ -455,11 +455,17 @@
 //  - shiftLabel     : 급여표에 표시할 '쉬프트' 항목 이름. 생략 시 기본값 '쉬프트'
 //  - holPublicLabel : 급여표에 표시할 '절수당'(공휴일근무) 항목 이름. 생략 시 기본값 '절수당'
 //                     (계산은 동일, 회사별 표기만 다름 / 예: 한국비알티는 '연장근로')
+//  - juHyuBasis     : 주휴수당을 그 달에 넣는 기준 (월 경계에 걸친 주 처리 방식)
+//        'restday'  → 유급주휴일(쉬는 날)이 그 달에 있으면 인정 (한국비알티)
+//                     예) 4월 수목 휴무 = 목요일 5번 → 주휴 5주
+//        'workweek' → 그 주의 근무를 그 달 안에서 마쳐야(마지막 근무일이 그 달) 인정 (범일운수)
+//                     예) 4월 수목 휴무 = 4주 (3월에 일한 주차는 3월 주휴로 빠짐)
+//        생략 시 기본값 'restday'
 // =========================================================
 const COMPANIES = {
-  bumil: { name: '범일운수㈜',   bonusHours: 88, seolBonus: 300000, chuseokBonus: 350000, shiftLabel: '쉬프트',   holPublicLabel: '절수당'   },  // 상여 88H, 명절수당 설30·추35만
-  krbrt: { name: '한국비알티㈜', bonusHours: 0,  seolBonus: 300000, chuseokBonus: 350000, shiftLabel: '연장근로', holPublicLabel: '연장근로' },  // 상여 없음, 쉬프트·절수당 → 연장근로
-  // 예) newco: { name: '새운수㈜', bonusHours: 0, seolBonus: 0, chuseokBonus: 0, shiftLabel: '쉬프트', holPublicLabel: '절수당' },
+  bumil: { name: '범일운수㈜',   bonusHours: 88, seolBonus: 300000, chuseokBonus: 350000, shiftLabel: '쉬프트',   holPublicLabel: '절수당',   juHyuBasis: 'workweek' },  // 상여 88H · 주휴: 근무주 완료 기준
+  krbrt: { name: '한국비알티㈜', bonusHours: 0,  seolBonus: 300000, chuseokBonus: 350000, shiftLabel: '연장근로', holPublicLabel: '연장근로', juHyuBasis: 'restday'  },  // 상여 없음 · 주휴: 유급주휴일 기준
+  // 예) newco: { name: '새운수㈜', bonusHours: 0, seolBonus: 0, chuseokBonus: 0, shiftLabel: '쉬프트', holPublicLabel: '절수당', juHyuBasis: 'restday' },
 };
 
 // =========================================================
@@ -921,12 +927,17 @@ function updateCalc() {
   // ④ 야간수당(오후) — 오후 근무일수 × 3H × 시급 × 0.5
   const nightPM = Math.round(pmWorked * 3 * HR * 0.5);
 
-  // ⑤ 주휴수당 — '무급휴무일 바로 전날'마다 1주(8H). 단, 그 주에 소정근로일 결근이
-  //    있으면 해당 주 주휴수당 미발생. (법정공휴일 결근은 근로의무 면제일이라 제외)
-  const juHyuPrevDow = (restDays[0] + 6) % 7;
+  // ⑤ 주휴수당 — 1주당 8H. 회사별로 '월 경계에 걸친 주'를 어느 달에 넣는지 기준이 다름.
+  //    · restday  (한국비알티): 유급주휴일(쉬는 날)이 그 달에 있으면 인정 → 유급주휴일 기준으로 센다
+  //    · workweek (범일운수)  : 그 주 근무를 그 달 안에서 마쳐야 인정 → '무급휴무일 바로 전날'(마지막 근무일) 기준
+  //    공통: 직전 한 주(7일)에 소정근로일 결근이 있으면 해당 주 주휴수당 미발생.
+  //         (법정공휴일 결근은 근로의무 면제일이라 제외)
+  const juHyuDow = (company.juHyuBasis === 'workweek')
+    ? (restDays[0] + 6) % 7   // 무급휴무일 바로 전날 = 그 주의 마지막 근무일
+    : restDays[1];            // 유급주휴일(쉬는 날)
   let juHyuCount = 0, juHyuForfeit = 0;
   for (let d = 1; d <= total; d++) {
-    if (new Date(curYear, curMonth, d).getDay() !== juHyuPrevDow) continue;
+    if (new Date(curYear, curMonth, d).getDay() !== juHyuDow) continue;
     juHyuCount++;
     // 해당 주 = 그 전날 기준 직전 7일. 그 안에 소정근로일(공휴일 제외) 결근이 있으면 미발생
     let absentInWeek = false;
